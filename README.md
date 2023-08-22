@@ -22,7 +22,7 @@ Welcome to the C Neural Network Library—a comprehensive toolkit thoughtfully e
 
 # Simple interface
 
-![alt text](https://github.com/dipezed/Neural-Network-Librairy-C/blob/main/img-readme.png?raw=true "Logo of Safe_Link")
+![alt text](https://github.com/dipezed/Neural-Network-Librairy-C/blob/main/img_readme.png?raw=true "Logo of Safe_Link")
 
 # Optimizers
 
