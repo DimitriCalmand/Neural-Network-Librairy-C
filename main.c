@@ -1,10 +1,10 @@
-    #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "matrix/Matrix.h"
-#include "neuron/Loss.h"
-#include "neuron/Model.h"  
-#include "prepare_dataset.h" 
-#include "neuron/Saver.h"
+#include "nn/Loss.h"
+#include "nn/Model.h"  
+#include "src/dataset/prepare_dataset.h" 
+#include "nn/Saver.h"
 #include <time.h>
 #include <string.h>
 #include <sys/time.h>
@@ -17,7 +17,7 @@ void generate_sequences(int batch_size, int nbr_class, int size, Matrix* x, Matr
         int start =  rand() % (nbr_class-size);
         x->array[pos_i+ start] = 1;
         // y->array[i*nbr_class+ start+size] = 1;
-        int step = rand()%2+1;
+        int step = 1; //rand()%2+1;
         y->array[pos_i+ start+step] = 1;
         for (int j = 1; j != size; j++)
         {

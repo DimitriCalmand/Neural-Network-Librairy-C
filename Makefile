@@ -1,39 +1,38 @@
 CC = gcc
 
-
 CFLAGS = -Wall -Wextra \
          -std=c99 \
-         -O2 \
-         -g \
+		 -I./include \
+		 -L/usr/lib/x86_64-linux-gnu/hdf5/serial \
+         -lhdf5 \
+	     -g \
+         -fsanitize=address \
          -mavx512dq \
-         -DUSE_SIMD=1 \
          -D_GNU_SOURCE
 
-LDFLAGS = -g
-
 LDLIBS = -lm \
-         -lhdf5 \
          -fuse-ld=gold \
-         -fsanitize=address
+
+LIBS = $(wildcard lib/*.a)
 
 TARGET ?= main
+LIBRARY = libnn.a
 
-SRCS=$(wildcard ./main.c)
-SRCS+= $(wildcard ./prepare_dataset.c)
-SRCS+= $(wildcard ./matrix/*.c)
-SRCS+= $(wildcard ./matrix/math/*.c)
-SRCS+= $(wildcard ./matrix/utils/*.c)
-SRCS+= $(wildcard ./matrix/math/min_max/*.c)
-SRCS+= $(wildcard ./neuron/*.c)
-SRCS+= $(wildcard ./neuron/activation/*.c)
-SRCS+= $(wildcard ./neuron/loss_function/*.c)
+OBJS_MAIN = main.o src/dataset/prepare_dataset.o
+
+SRCS+= $(wildcard ./src/nn/*.c)
+SRCS+= $(wildcard ./src/nn/activation/*.c)
+SRCS+= $(wildcard ./src/nn/loss/*.c)
 
 OBJS=$(SRCS:.c=.o)
 
-all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) ${LDFLAGS} ${LDLIBS} -o $(TARGET)
+all: $(OBJS_MAIN) $(OBJS) $(LIBS)
+	$(CC) $< -o $(TARGET) $(LIBS) $(OBJS) $(CFLAGS) $(LDLIBS)
 
+library: $(OBJS)
+	ar -crs $(LIBRARY) $(OBJS)
 clean:
-	${RM} ${OBJS}  ${DEPS} ${TARGET}
+	${RM} ${OBJS}  ${DEPS} ${TARGET} $(LIBRARY)
+
 list:
-	@echo $(SRCS)
+	@echo $(SRCS) $(LIBS)
