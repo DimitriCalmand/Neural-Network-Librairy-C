@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra \
 		 -L/usr/lib/x86_64-linux-gnu/hdf5/serial \
          -lhdf5 \
 	     -g \
+		 -DUSE_SIMD=0 \
          -fsanitize=address \
          -mavx512dq \
          -D_GNU_SOURCE
@@ -32,7 +33,7 @@ all: $(OBJS_MAIN) $(OBJS) $(LIBS)
 library: $(OBJS)
 	ar -crs $(LIBRARY) $(OBJS)
 clean:
-	${RM} ${OBJS}  ${DEPS} ${TARGET} $(LIBRARY)
+	${RM} ${OBJS}  ${DEPS} ${TARGET} $(LIBRARY) $(OBJS_MAIN)
 
 list:
 	@echo $(SRCS) $(LIBS)
